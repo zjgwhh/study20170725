@@ -1,0 +1,68 @@
+一，每个运行在计算机上的程序，都有一个“当前工作目录”，或cwd。所有没有从根文件夹开始的文件名或路径，都假定在当前工作目录下。利用os.getcwd()函数，可以取得当前工作路径的字符串，并可以利用os.chdir()改变它。
+举例如下：
+>>> import os
+>>> os.getcwd()
+'C:\\Python36'
+>>> os.chdir('c:\\windows')
+>>> os.getcwd()
+'c:\\windows'
+
+二，有两种方法指定一个文件路径。
+? “绝对路径”，总是从根文件夹开始。
+? “相对路径”，它相对于程序的当前工作目录。
+
+三，os.makedirs()创建新文件夹。
+举例：
+>>> import os
+>>> os.makedirs('c:\\del\\del\\del')
+>>> os.chdir('c:\\del\del\\del')
+>>> os.getcwd()
+'c:\\del\\del\\del'
+
+四，os.path 模块包含了许多与文件名和文件路径相关的有用函数。os.path 是os 模块中的模块，所以只要执行import os 就可以导入它。
+? 调用os.path.abspath(path)将返回参数的绝对路径的字符串。这是将相对路径转换为绝对路径的简便方法。
+? 调用os.path.isabs(path)，如果参数是一个绝对路径，就返回True，如果参数是一个相对路径，就返回False。
+? 调用os.path.relpath(path, start)将返回从start 路径到path 的相对路径的字符串。如果没有提供start，就使用当前工作目录作为开始路径。
+理解代码：
+>>>import os
+>>> os.path.abspath('.')
+'C:\\Python36'
+>>> os.path.abspath('.\\Scripts')
+'C:\\Python36\\Scripts'
+>>> os.path.isabs('.')
+False
+>>> os.path.isabs(os.path.abspath('.'))
+True
+
+五，查看文件大小和文件夹内容
+一旦有办法处理文件路径，就可以开始搜集特定文件和文件夹的信息。os.path 模块提供了一些函数，用于查看文件的字节数以及给定文件夹中的文件和子文件夹。
+? 调用os.path.getsize(path)将返回path 参数中文件的字节数。
+? 调用os.listdir(path)将返回文件名字符串的列表，包含path 参数中的每个文件（请注意，这个函数在os模块中，而不是os.path）。
+
+下面是我在交互式环境中尝试这些函数的结果：
+>>> os.path.getsize('C:\\Windows\\System32\\calc.exe')
+776192               #calc.exe 程序是776192 字节
+>>> os.listdir('C:\\Windows\\System32')
+['0409', '12520437.cpx', '12520850.cpx', '5U877.ax', 'aaclient.dll','xwtpdui.dll', 'xwtpw32.dll', 'zh-CN', 'zh-HK', 'zh-TW', 'zipfldr.dll']
+
+如果想知道这个目录下所有文件的总字节数，就可以同时使用os.path.getsize()和os.listdir()。
+
+>>> totalSize = 0
+>>> for filename in os.listdir('C:\\Windows\\System32'):
+totalSize = totalSize + os.path.getsize(os.path.join('C:\\Windows\\System32', filename))
+>>> print(totalSize)
+1117846456
+
+当循环遍历C:\Windows\System32 文件夹中的每个文件时，totalSize 变量依次增加每个文件的字节数。请注意，我在调用os.path.getsize()时，使用了os.path.join()来连接文件夹名称和当前的文件名。os.path.getsize()返回的整数添加到otalSize 中。在循环遍历所有文件后，我打印出totalSize，看看C:\Windows\System32 文件夹的总字节数。
+
+结合我的电脑代码：
+>>> import
+>>> to=0
+>>> for filename in os.listdir('C:\\Windows\\System32'):
+	to=to+os.path.getsize(os.path.join('c:\\windows\\system32',filename))	
+>>> print(to)
+1211865962
+
+
+ 
+138页
