@@ -138,4 +138,43 @@ Bacon is not a vegetable.
 
 
 九，8.4 用pprint.pformat()函数保存变量
+pprint.pprint()函数将列表或字典中的内容“漂亮打印”到屏幕，而pprint.pformat()函数将返回同样的文本字符串，但不是打印它。
 
+例如，在交互式环境中输入以下代码：
+>>> import pprint  #导入PPRINT模块
+>>> cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+>>> pprint.pformat(cats)
+"[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]"
+>>> fileObj = open('myCats.py', 'w')
+>>> fileObj.write('cats = ' + pprint.pformat(cats) + '\n')
+83
+>>> fileObj.close()
+
+import 语句导入的模块本身就是Python 脚本。如果来自pprint.pformat()的字符串保存为一个.py 文件，该文件就是一个可以导入的模块，像其他模块一样。
+由于Python 脚本本身也是带有.py 文件扩展名的文本文件，所以你的Python 程序甚至可以生成其他Python 程序。然后可以将这些文件导入到脚本中。
+>>> import myCats
+>>> myCats.cats
+[{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+>>> myCats.cats[0]
+{'name': 'Zophie', 'desc': 'chubby'}
+>>> myCats.cats[0]['name']
+'Zophie'
+创建一个.py 文件（而不是利用shelve 模块保存变量）的好处在于，因为它是一个文本文件，所以任何人都可以用一个简单的文本编辑器读取和修改该文件的内容。但是，对于大多数应用，利用shelve 模块来保存数据，是将变量保存到文件的最佳方式。只有基本数据类型，诸如整型、浮点型、字符串、列表和字典，可以作
+为简单文本写入一个文件。例如，File 对象就不能够编码为文本。
+
+九，8.5 项目：生成随机的测验试卷文件
+假如你是一位地理老师，班上有35 名学生，你希望进行美国各州首府的一个小测验。不妙的是，班里有几个坏蛋，你无法确信学生不会作弊。你希望随机调整问题的次序，这样每份试卷都是独一无二的，这让任何人都不能从其他人那里抄袭答案。当然，手工完成这件事又费时又无聊。好在，你懂一些Python。
+
+下面是程序所做的事：
+? 创建35 份不同的测验试卷。
+? 为每份试卷创建50 个多重选择题，次序随机。
+? 为每个问题提供一个正确答案和3 个随机的错误答案，次序随机。
+? 将测验试卷写到35 个文本文件中。
+? 将答案写到35 个文本文件中。
+这意味着代码需要做下面的事：
+? 将州和它们的首府保存在一个字典中。
+? 针对测验文本文件和答案文本文件，调用open()、write()和close()。
+
+十，8.6 项目：多重剪贴板
+
+? 利用random.shuffle()随机调整问题和多重选项的次序。
