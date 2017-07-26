@@ -63,6 +63,79 @@ totalSize = totalSize + os.path.getsize(os.path.join('C:\\Windows\\System32', fi
 >>> print(to)
 1211865962
 
+六，8.1.8 检查路径有效性
+os.path 模块提
+供了一些函数，用于检测给定的路径是否存在，以及它是文件还是文件夹。
+? 如果path 参数所指的文件或文件夹存在，调用s.path.exists(path)将返回True，否则返回False。
+? 如果path 参数存在，并且是一个文件，调用os.path.isfile(path)将返回True，否则返回False。
+? 如果path 参数存在，并且是一个文件夹，调用os.path.isdir(path)将返回True，否则返回False。
 
- 
-138页
+下面是我在交互式环境中尝试这些函数的结果：
+>>> os.path.exists('C:\\Windows')
+True
+>>> os.path.exists('C:\\some_made_up_folder')
+False
+>>> os.path.isdir('C:\\Windows\\System32')
+True
+>>> os.path.isfile('C:\\Windows\\System32')
+False
+>>> os.path.isdir('C:\\Windows\\System32\\calc.exe')
+False
+>>> os.path.isfile('C:\\Windows\\System32\\calc.exe')
+True
+
+利用os.path.exists()函数，可以确定DVD 或闪存盘当前是否连在计算机上。例如，如果在Windows 计算机上，我想用卷名D:\检查一个闪存盘，可以这样做：
+
+>>> os.path.exists('D:\\')
+False
+不好！看起来我忘记插入闪存盘了。
+
+七，8.2 文件读写过程
+在Python 中，读写文件有3 个步骤：
+1．调用open()函数，返回一个File 对象。
+2．调用File 对象的read()或write()方法。
+3．调用File 对象的close()方法，关闭该文件。
+
+实践代码如下：
+>>> baconFile=open('bacon.txt','w')
+>>> baconFile.write('hello world:\n')
+13
+>>> baconFile.close()
+>>> baconFile=open('bacon.txt','a')
+>>> baconFile.write('Bacon is not a vegetable.')
+25
+>>> baconFile.close()
+>>> baconFile=open('bacon.txt')
+>>> content=baconFile.read()
+>>> baconFile.close()
+>>> print(content)
+hello world:
+Bacon is not a vegetable.
+
+八，8.3 用shelve 模块保存变量
+
+利用shelve 模块，你可以将Python 程序中的变量保存到二进制的shelf 文件中。
+这样，程序就可以从硬盘中恢复变量的数据。shelve 模块让你在程序中添加“保存”和“打开”功能。例如，如果运行一个程序，并输入了一些配置设置，就可以将这些设置保存到一个shelf 文件，然后让程序下一次运行时加载它们。
+
+在交互式环境中输入以下代码：
+>>> import shelve
+>>> shelf=shelve.open('mydata')  #调用函数shelve.open()并传入一个文件名，然后将返回的值保存在一个变量中。
+>>> cats=['Zophie','Pooka','Simon']
+>>> shelf['cats']=cats
+>>> shelf.close()
+>>> 
+在Windows 上运行前面的代码，你会看到在当前工作目录下有3 个新文件：mydata.bak、mydata.dat 和mydata.dir。
+就像字典一样，shelf 值有keys()和values()方法，返回shelf 中键和值的类似列表的值。因为这些方法返回类似列表的值，而不是真正的列表，所以应该将它们传递给list()函数，取得列表的形式。在交互式环境中输入以下代码：
+
+>>> shelfFile = shelve.open('mydata')
+>>> list(shelfFile.keys())
+['cats']
+>>> list(shelfFile.values())
+[['Zophie', 'Pooka', 'Simon']]
+>>> shelfFile.close()
+
+创建文件时，如果你需要在Notepad 或TextEdit 这样的文本编辑器中读取它们，纯文本就非常有用。但是，如果想要保存Python 程序中的数据，那就使用shelve 模块。
+
+
+九，8.4 用pprint.pformat()函数保存变量
+
